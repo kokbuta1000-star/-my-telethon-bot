@@ -26,13 +26,12 @@ def keep_alive():
 threading.Thread(target=keep_alive, daemon=True).start()
 # -------------------------------------------------------------
 
-# --- 2. إعدادات بيانات حسابك وجلستك ---
-# تنبيه: تذكر استبدال النص بـ كود الجلسة (String Session) الخاص بك لتفادي توقف السكربت (Status 1)
-API_ID = 26889392
-API_HASH = "b043ec11b5186b865cbef91b947c92b2"
-SESSION_STRING = "ضع_كود_الجلسة_هنا_بالكامل" 
+# --- 2. إعدادات بيانات حسابك وجلستك الجديدة ---
+API_ID = 30655981
+API_HASH = "bed0bded4e3a82c8169dfd409a48e423"
+SESSION_STRING = "1BVtsOMEBu4XFMIqhIUYruXEC96WXaJlu-8-rtDDcUtkaHtgiDJ2JkVQzlhno_YJNXfSCLwkEb8-V8o2PAevrXv9QjzFGKVyFDi5AxtbhpQpyEGT86w5d31xBBBYl2UselbwdhwJbqaEaEyg4VZqn6W3hdjaWXWEDRL0ls_jgGByYy6ckNP8nyPG4Z6RmDvfyecMdETnoK5OZRUJDl0aO8HWl4wUNfX5Jl5Dq8KcK_ayKfMMHfmxM0WxsFet-A9L8RvtkZxWrNbOyp-WnuNu5p6Iyw1CPqIMHCXEMCW-272aaUomRm05c4cE0DUL6Z3AxwkVzJy3u4Yl_rdZwFvvSGEUZZvzjDkw="
 
-# إنشاء عميل التليثون باستخدام الجلسة النصية المستخرجة
+# إنشاء عميل التليثون باستخدام الجلسة النصية الصحيحة
 client = TelegramClient(StringSession(SESSION_STRING), API_ID, API_HASH)
 
 # --- 3. أوامر اليوزر بوت (UserBot Commands) ---
@@ -41,8 +40,6 @@ client = TelegramClient(StringSession(SESSION_STRING), API_ID, API_HASH)
 @client.on(events.NewMessage(pattern=r'\.فحص', outgoing=True))
 async def check_bot(event):
     await event.edit("**🤖 يوزر بوت Regn يعمل بنجاح وكفاءة عالية الآن على سيرفر Render مدمجاً بـ الـ Keep-Alive!**")
-
-# هنا يمكنك إضافة أي وظائف أو ملفات حماية وتنظيف للمجموعات مستقبلاً...
 
 # --- 4. إطلاق تشغيل الحساب بصفة دائمة ---
 print("Connecting and starting the UserBot...")
