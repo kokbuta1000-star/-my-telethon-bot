@@ -3,8 +3,9 @@ import http.server
 import socketserver
 import threading
 from telethon import TelegramClient, events
+from telethon.sessions import StringSession
 
-# --- حل مشكلة تشغيل السيرفر ومنع الخمول على Render ---
+# --- 1. حل مشكلة الـ Event Loop ومنع الخمول على سيرفر Render ---
 try:
     asyncio.set_event_loop(asyncio.new_event_loop())
 except Exception:
@@ -16,34 +17,34 @@ def keep_alive():
             self.send_response(200)
             self.send_header('Content-type', 'text/plain')
             self.end_headers()
-            self.wfile.write(b"Bot is alive and running!")
+            self.wfile.write(b"Regn UserBot is running perfectly!")
 
-    # تشغيل منفذ وهمي لاستقبال اتصالات التنشيط من السيرفر
+    # تشغيل منفذ وهمي (Port 10000) متوافق مع إعدادات الـ Web Service المجانية لـ Render
     with socketserver.TCPServer(("", 10000), HeartbeatHandler) as httpd:
         httpd.serve_forever()
 
 threading.Thread(target=keep_alive, daemon=True).start()
-# --------------------------------------------------
+# -------------------------------------------------------------
 
-# --- إعدادات بيانات التليجرام وكود الجلسة (Session) ---
-API_ID = 26889392  # تم جلبها بدقة من لقطة الشاشة الخاصة بك
-API_HASH = "b043ec11b5186b865cbef91b947c92b2"  # ضع الـ API Hash الخاص بحسابك هنا بين علامتي التنصيص
-SESSION_STRING = "ضع_كود_الجلسة_هنا_بالكامل"  # الصق نص الجلسة الطويل (Telethon String Session) هنا
+# --- 2. إعدادات بيانات حسابك وجلستك ---
+# تنبيه: تذكر استبدال النص بـ كود الجلسة (String Session) الخاص بك لتفادي توقف السكربت (Status 1)
+API_ID = 26889392
+API_HASH = "b043ec11b5186b865cbef91b947c92b2"
+SESSION_STRING = "ضع_كود_الجلسة_هنا_بالكامل" 
 
-# تشغيل العميل باستخدام الجلسة النصية المستخرجة
-from telethon.sessions import StringSession
+# إنشاء عميل التليثون باستخدام الجلسة النصية المستخرجة
 client = TelegramClient(StringSession(SESSION_STRING), API_ID, API_HASH)
 
-# --- أوامر اليوزر بوت (UserBot) ---
+# --- 3. أوامر اليوزر بوت (UserBot Commands) ---
 
-# أمر الفحص (.فحص)
+# أمر الفحص الذاتي للتأكد من تشغيل البوت
 @client.on(events.NewMessage(pattern=r'\.فحص', outgoing=True))
 async def check_bot(event):
-    await event.edit("**🤖 يوزر بوت Regn يعمل بنجاح وكفاءة عالية الآن على سيرفر Render!**")
+    await event.edit("**🤖 يوزر بوت Regn يعمل بنجاح وكفاءة عالية الآن على سيرفر Render مدمجاً بـ الـ Keep-Alive!**")
 
-# يمكنك إضافة أي أوامر تلقائية أخرى هنا مستقبلاً...
+# هنا يمكنك إضافة أي وظائف أو ملفات حماية وتنظيف للمجموعات مستقبلاً...
 
-# إطلاق تشغيل الحساب بصفة دائمة
+# --- 4. إطلاق تشغيل الحساب بصفة دائمة ---
 print("Connecting and starting the UserBot...")
 client.start()
 client.run_until_disconnected()
